@@ -70,7 +70,7 @@ string validateUserInput(string userInput, map<string, int> validChoices, void o
 
 }
 
-int main() {
+void wandShopSimulation() {
 
     // Map for the wand word choices (in Sickles)
     map<string, int> wandWoodChoices = {
@@ -120,6 +120,12 @@ int main() {
     cout << "Ahh yes, a " << wandLength << " inch " << usersWoodChoice << " wood wand with a " << usersCoreChoice << " core will be very powerful in the right hands." << endl;
     cout << "That's going to be " << wandPriceGalleons << " galleons & " << wandPriceSickles << " sickles (" << wandPrice << " sickles) youngin'." << endl;
     cout << "Thank you for your business! With great power comes great responsibility, so don't disappoint youngin'!" << endl;
+
+}
+
+int main() {
+
+    wandShopSimulation();
 
     return 0;
 
