@@ -4,6 +4,9 @@
 #include <algorithm>
 using namespace std;
 
+// Galleon in terms of sickles
+const int GALLEON = 17;
+
 void woodMenuOutput() {
 
     cout << "Select one of our fine woods for your wand:" << endl;
@@ -16,15 +19,16 @@ void woodMenuOutput() {
 void coreMenuOutput() {
 
     cout << "Select one of our powerful wand cores:" << endl;
-    cout << "\t DRAGON HEARTSTRING - While it can be temperamental, this core is the most powerful and can learn the quickest - 15 sickles" << endl;
-    cout << "\t PHOENIX FEATHER - The rarest core there is. It can be tricky to bond with, but it is also the most capable across all magic types - 20 sickles" << endl;
-    cout << "\t BASILISK HORN - Only one wand is known to have this core, you could be the second - 30 sickles" << endl;
+    cout << "\t DRAGON HEARTSTRING - While it can be temperamental, this core is the most powerful and can learn the quickest - 15 sickles/inch" << endl;
+    cout << "\t PHOENIX FEATHER - The rarest core there is. It can be tricky to bond with, but it is also the most capable across all magic types - 20 sickles/inch" << endl;
+    cout << "\t BASILISK HORN - Only one wand is known to have this core, you could be the second - 30 sickles/inch" << endl;
 
 }
 
 void wandLengthOutput() {
 
     cout << "Now all that is left, what length would you like your wand? (between 8-15 inches)" << endl;
+    cout << "!!! Whole numbers only. !!!" << endl;
 
 }
 
@@ -94,10 +98,8 @@ int main() {
             {"15", 15}
     };
 
-    cout << "Welcome to Lord Benz's Ultimate Wizarding Shop" << endl;
-    cout << "Let us see if we can find the wand for you."  << endl;
-    cout << "\t** 29 knuts = 1 sickle **" << endl;
-    cout << "\t** 17 sickles = 1 galleon **" << endl;
+    cout << "Welcome to Professor Worthington's Quality Wand Shop" << endl;
+    cout << "Let us see if we can find the wand for you.\n"  << endl;
 
     woodMenuOutput();
     string usersWoodChoice;
@@ -111,7 +113,13 @@ int main() {
     string wandLength;
     wandLength = validateUserInput(wandLength, wandLengthChoices, wandLengthOutput);
 
-    cout << usersWoodChoice << " " << usersCoreChoice << " " << wandLength;
+    int wandPrice = (wandWoodChoices.at(usersWoodChoice) + wandCoreChoices.at(usersCoreChoice)) * wandLengthChoices.at(wandLength);
+    int wandPriceGalleons = wandPrice / GALLEON;
+    int wandPriceSickles = wandPrice % GALLEON;
+
+    cout << "Ahh yes, a " << wandLength << " inch " << usersWoodChoice << " wood wand with a " << usersCoreChoice << " core will be very powerful in the right hands." << endl;
+    cout << "That's going to be " << wandPriceGalleons << " galleons & " << wandPriceSickles << " sickles (" << wandPrice << " sickles) youngin'." << endl;
+    cout << "Thank you for your business! With great power comes great responsibility, so don't disappoint youngin'!" << endl;
 
     return 0;
 
