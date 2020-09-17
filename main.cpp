@@ -10,22 +10,22 @@ const int GALLEON = 17;
 void woodMenuOutput() {
 
     cout << "Select one of our fine woods for your wand:" << endl;
-    cout << "\t BLACK WALNUT - A sleek dark finish meant for only those with good instinct - 10 sickles/inch" << endl;
-    cout << "\t EBONY - A jet-black wand with a high reputation perfect for those into combative magic - 17 sickles/inch" << endl;
-    cout << "\t REDWOOD - A very rare wood that is known to bring good luck to its owner - 25 sickles/inch" << endl;
+    cout << "\tBLACK WALNUT\n\t\tA sleek dark finish meant for only those with good instinct\n\t\t10 sickles/inch" << endl;
+    cout << "\tEBONY\n\t\tA jet-black wand with a high reputation perfect for those into combative magic\n\t\t17 sickles/inch" << endl;
+    cout << "\tREDWOOD\n\t\tA very rare wood that is known to bring good luck to its owner\n\t\t25 sickles/inch" << endl;
 
 }
 
 void coreMenuOutput() {
 
     cout << "Select one of our powerful wand cores:" << endl;
-    cout << "\t DRAGON HEARTSTRING - While it can be temperamental, this core is the most powerful and can learn the quickest - 15 sickles/inch" << endl;
-    cout << "\t PHOENIX FEATHER - The rarest core there is. It can be tricky to bond with, but it is also the most capable across all magic types - 20 sickles/inch" << endl;
-    cout << "\t BASILISK HORN - Only one wand is known to have this core, you could be the second - 30 sickles/inch" << endl;
+    cout << "\tDRAGON HEARTSTRING\n\t\tWhile it can be temperamental, this core is the most powerful and can learn the quickest\n\t\t15 sickles/inch" << endl;
+    cout << "\tPHOENIX FEATHER\n\t\tThe rarest core there is. It can be tricky to bond with, but it is also the most capable across all magic types\n\t\t20 sickles/inch" << endl;
+    cout << "\tBASILISK HORN\n\t\tOnly one wand is known to have this core, you could be the second\n\t\t30 sickles/inch" << endl;
 
 }
 
-void wandLengthOutput() {
+void wandLengthMenuOutput() {
 
     cout << "Now all that is left, what length would you like your wand? (between 8-15 inches)" << endl;
     cout << "!!! Whole numbers only. !!!" << endl;
@@ -47,71 +47,95 @@ string getUserInput() {
 
 }
 
-string validateUserInput(string userInput, map<string, int> validChoices, void outputFunction()) {
+bool validateUserInput(const string& userInput, map<string, int> validInput) {
 
-    userInput = getUserInput();
+   map<string, int>::iterator it;
 
-    auto it = validChoices.begin();
+   for(it = validInput.begin(); it != validInput.end(); ++it) {
+       string validChoice = it->first;
 
-    while(it != validChoices.end()) {
-        string choice = it->first;
+       if(validChoice == userInput) {
+           return true;
+       }
+   }
 
-        if(choice == userInput) {
-            return userInput;
-        } else if(next(it) == validChoices.end()){
-            cout << "!!! Invalid input. Please try again with a valid answer. !!!\n" << endl;
-            outputFunction();
-            userInput = getUserInput();
-            it = validChoices.begin();
-        } else if(choice != userInput) {
-            it++;
-        }
-    }
+   return false;
 
 }
 
 void wandShopSimulation() {
 
+    bool loopAgain = true;
+
     // Map for the wand word choices (in Sickles)
-    map<string, int> wandWoodChoices = {
-            {"BLACK WALNUT", 10},
-            {"EBONY", 17},
-            {"REDWOOD", 25}
-    };
+    map<string, int> wandWoodChoices;
+    wandWoodChoices.insert(pair<string, int>("BLACK WALNUT",10));
+    wandWoodChoices.insert(pair<string, int>("EBONY", 17));
+    wandWoodChoices.insert(pair<string, int>("REDWOOD", 25));
 
     // Map for the wand core choices (in Sickles)
-    map<string, int> wandCoreChoices = {
-            {"DRAGON HEARTSTRING", 15},
-            {"PHOENIX FEATHER", 20},
-            {"BASILISK HORN", 30}
-    };
+    map<string, int> wandCoreChoices;
+    wandCoreChoices.insert(pair<string, int>("DRAGON HEARTSTRING",15));
+    wandCoreChoices.insert(pair<string, int>("PHOENIX FEATHER", 20));
+    wandCoreChoices.insert(pair<string, int>("BASILISK HORN", 30));
 
     // Map for the wand length choices
-    map<string, int> wandLengthChoices = {
-            {"8", 8},
-            {"9", 9},
-            {"10", 10},
-            {"11", 11},
-            {"12", 12},
-            {"13", 13},
-            {"14", 14},
-            {"15", 15}
-    };
+    map<string, int> wandLengthChoices;
+    wandLengthChoices.insert(pair<string, int>("8", 8));
+    wandLengthChoices.insert(pair<string, int>("9", 9));
+    wandLengthChoices.insert(pair<string, int>("10", 10));
+    wandLengthChoices.insert(pair<string, int>("11", 11));
+    wandLengthChoices.insert(pair<string, int>("12", 12));
+    wandLengthChoices.insert(pair<string, int>("13", 13));
+    wandLengthChoices.insert(pair<string, int>("14", 14));
+    wandLengthChoices.insert(pair<string, int>("15", 15));
 
     cout << "Welcome to Professor Worthington's Quality Wand Shop" << endl;
     cout << "Let us see if we can find the wand for you.\n"  << endl;
 
     woodMenuOutput();
-    string usersWoodChoice;
-    usersWoodChoice = validateUserInput(usersWoodChoice, wandWoodChoices, woodMenuOutput);
+    string usersWoodChoice = getUserInput();
+    bool isValid = validateUserInput(usersWoodChoice, wandWoodChoices);
+    while(loopAgain) {
+        if(isValid) {
+            loopAgain = false;
+        } else {
+            cout << "!!! Invalid input. Please try again with a valid answer. !!!\n" << endl;
+            woodMenuOutput();
+            usersWoodChoice = getUserInput();
+            isValid = validateUserInput(usersWoodChoice, wandWoodChoices);
+        }
+    }
 
+    loopAgain = true;
     coreMenuOutput();
-    string usersCoreChoice;
-    usersCoreChoice = validateUserInput(usersCoreChoice, wandCoreChoices, coreMenuOutput);
+    string usersCoreChoice = getUserInput();
+    isValid = validateUserInput(usersCoreChoice, wandCoreChoices);
+    while(loopAgain) {
+        if(isValid) {
+            loopAgain = false;
+        } else {
+            cout << "!!! Invalid input. Please try again with a valid answer. !!!\n" << endl;
+            coreMenuOutput();
+            usersCoreChoice = getUserInput();
+            isValid = validateUserInput(usersCoreChoice, wandCoreChoices);
+        }
+    }
 
-    wandLengthOutput();
-    string wandLength;
-    wandLength = validateUserInput(wandLength, wandLengthChoices, wandLengthOutput);
+    loopAgain = true;
+    wandLengthMenuOutput();
+    string wandLength = getUserInput();
+    isValid = validateUserInput(wandLength, wandLengthChoices);
+    while(loopAgain) {
+        if(isValid) {
+            loopAgain = false;
+        } else {
+            cout << "!!! Invalid input. Please try again with a valid answer. !!!\n" << endl;
+            wandLengthMenuOutput();
+            wandLength = getUserInput();
+            isValid = validateUserInput(wandLength, wandLengthChoices);
+        }
+    }
 
     int wandPrice = (wandWoodChoices.at(usersWoodChoice) + wandCoreChoices.at(usersCoreChoice)) * wandLengthChoices.at(wandLength);
     int wandPriceGalleons = wandPrice / GALLEON;
